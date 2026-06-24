@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SanCode — Write Less. Ship More.</title>
+    <meta
+      name="description"
+      content="SanCode is an open-source coding standard for AI agents that reduces code bloat, unnecessary abstractions, and dependency addiction."
+    />
+    <meta name="theme-color" content="#0a0a0a" />
+
+    <meta property="og:title" content="SanCode — AI Coding Standard" />
+    <meta
+      property="og:description"
+      content="Write less. Ship more. A practical standard for Claude Code, Codex, Cursor, Windsurf, and AI coding agents that need to stop overbuilding."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://github.com/HoratiuCode/sancode" />
+    <meta property="og:image" content="sancode-avatar.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+      defer
+    ></script>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/svg+xml" href="favicon-s.svg" />
+    <link rel="shortcut icon" href="favicon-s.svg" />
+    <link rel="apple-touch-icon" href="favicon-s.svg" />
+  </head>
+  <body id="top">
+    <canvas id="noise-overlay"></canvas>
+
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+
+    <nav class="nav">
+      <div class="nav-inner">
+        <div class="nav-brand-menu">
+          <button
+            class="nav-logo"
+            id="nav-logo-menu"
+            type="button"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <span class="nav-mark" aria-hidden="true">S</span>
+            <span class="nav-brand">SanCode</span>
+          </button>
+          <div class="nav-logo-dropdown" id="nav-logo-dropdown" hidden>
+            <a href="#top" data-brand-menu-link>Top</a>
+            <a href="#start" data-brand-menu-link>Start</a>
+            <a
+              href="https://github.com/HoratiuCode/sancode"
+              target="_blank"
+              rel="noopener"
+              data-brand-menu-link
+              >GitHub</a
+            >
+          </div>
+        </div>
+        <div class="nav-links">
+          <a href="#start">Start</a>
+          <a href="#examples">Examples</a>
+          <a href="#principles">Principles</a>
+          <a
+            href="https://github.com/HoratiuCode/sancode"
+            target="_blank"
+            rel="noopener"
+            >GitHub</a
+          >
+        </div>
+        <button
+          class="nav-hamburger"
+          id="nav-hamburger"
+          onclick="toggleMobileNav()"
+          aria-label="Toggle menu"
+        >
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
+        <div class="nav-mobile" id="nav-mobile">
+          <a href="#start" onclick="toggleMobileNav()">Start</a>
+          <a href="#examples" onclick="toggleMobileNav()">Examples</a>
+          <a href="#principles" onclick="toggleMobileNav()">Principles</a>
+          <a
+            href="https://github.com/HoratiuCode/sancode"
+            target="_blank"
+            rel="noopener"
+            onclick="toggleMobileNav()"
+            >GitHub</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Open Source &bull; MIT License
+        </div>
+
+        <img
+          src="sancode-avatar.png"
+          alt="SanCode avatar"
+          style="
+            width: min(220px, 52vw);
+            height: auto;
+            display: block;
+            margin: 0 auto 24px;
+            filter: drop-shadow(0 24px 60px rgba(255, 255, 255, 0.12));
+          "
+        />
+
+        <!-- prettier-ignore -->
+        <pre class="hero-ascii" aria-hidden="true" style="font-family: monospace; line-height: 1.1">
+███████╗ █████╗ ███╗   ██╗ ██████╗ ██████╗ ██████╗ ███████╗
+██╔════╝██╔══██╗████╗  ██║██╔════╝██╔═══██╗██╔══██╗██╔════╝
+███████╗███████║██╔██╗ ██║██║     ██║   ██║██║  ██║█████╗
+╚════██║██╔══██║██║╚██╗██║██║     ██║   ██║██║  ██║██╔══╝
+███████║██║  ██║██║ ╚████║╚██████╗╚██████╔╝██████╔╝███████╗
+╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝
+</pre>
+
+        <h1 class="hero-title">
+          Write less.<br />
+          <span class="hero-gradient">Ship more.</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          SanCode is a coding standard for AI agents designed to reduce
+          AI-generated code bloat, unnecessary abstractions, and dependency
+          addiction. Its core rule is simple:
+          <strong>every line of code must justify its existence.</strong>
+        </p>
+
+        <div class="hero-install">
+          <div class="install-widget">
+            <div class="install-widget-header">
+              <div class="install-dots">
+                <span class="dot dot-red"></span>
+                <span class="dot dot-yellow"></span>
+                <span class="dot dot-green"></span>
+              </div>
+              <div class="install-tabs">
+                <button
+                  class="install-tab active"
+                  data-platform="linux"
+                  onclick="switchPlatform('linux')"
+                >
+                  Add to your agent
+                </button>
+              </div>
+            </div>
+            <div class="install-widget-body">
+              <span class="install-prompt" id="install-prompt">$</span>
+              <code id="install-command"
+                >git clone https://github.com/HoratiuCode/sancode.git</code
+              >
+              <button
+                class="copy-btn"
+                onclick="copyInstall()"
+                title="Copy to clipboard"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                  <path
+                    d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                  />
+                </svg>
+                <span class="copy-text">Copy</span>
+              </button>
+            </div>
+          </div>
+          <p class="install-note" id="install-note">
+            Copy CLAUDE.md, CODEX.md, or CURSOR.md into your project. No
+            package. No runtime. No framework.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-install" id="start">
+      <div class="container">
+        <div class="section-header">
+          <h2>Start in 60 seconds</h2>
+        </div>
+
+        <div class="install-steps">
+          <div class="install-step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h4>Clone the standard</h4>
+              <div class="code-block">
+                <div class="code-header">
+                  <div class="code-tabs">
+                    <button
+                      class="code-tab active"
+                      data-platform="linux"
+                      onclick="switchStepPlatform('linux')"
+                    >
+                      shell
+                    </button>
+                  </div>
+                  <button
+                    class="copy-btn"
+                    id="step1-copy"
+                    onclick="copyText(this)"
+                    data-text="git clone https://github.com/HoratiuCode/sancode.git"
+                  >
+                    Copy
+                  </button>
+                </div>
+                <pre><code id="step1-command">git clone https://github.com/HoratiuCode/sancode.git</code></pre>
+              </div>
+              <p class="step-note" id="step1-note">
+                SanCode is just Markdown. You can read it, fork it, or paste it
+                into any AI coding workflow.
+              </p>
+            </div>
+          </div>
+
+          <div class="install-step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h4>Choose your agent file</h4>
+              <div class="code-block">
+                <div class="code-header">
+                  <span>files</span>
+                  <button
+                    class="copy-btn"
+                    onclick="copyText(this)"
+                    data-text="CLAUDE.md CODEX.md CURSOR.md"
+                  >
+                    Copy
+                  </button>
+                </div>
+                <pre><code>CLAUDE.md  <span class="code-comment"># Claude Code</span>
+CODEX.md   <span class="code-comment"># Codex</span>
+CURSOR.md  <span class="code-comment"># Cursor</span></code></pre>
+              </div>
+              <p class="step-note">
+                Drop the matching file into your repo so your agent stops
+                defaulting to packages, abstractions, and fake scale.
+              </p>
+            </div>
+          </div>
+
+          <div class="install-step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h4>Make the agent justify the diff</h4>
+              <div class="code-block">
+                <div class="code-header">
+                  <span>prompt</span>
+                  <button
+                    class="copy-btn"
+                    onclick="copyText(this)"
+                    data-text="Apply SanCode. Before writing code, delete, reuse, simplify, or explain why code is required. End with SanScore."
+                  >
+                    Copy
+                  </button>
+                </div>
+                <pre><code>Apply SanCode.
+Before writing code, delete, reuse, simplify,
+or explain why code is required.
+End with SanScore.</code></pre>
+              </div>
+              <p class="step-note">
+                The agent should report packages added, files created, lines
+                written, complexity introduced, and infrastructure added.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="install-windows">
+          <p>
+            SanCode is not software you install. It is pressure you apply to AI
+            agents before they bury your startup in code nobody asked for.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-demo" id="examples">
+      <div class="container">
+        <div class="section-header">
+          <h2>See it in action</h2>
+        </div>
+
+        <div class="terminal-window">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="dot dot-red"></span>
+              <span class="dot dot-yellow"></span>
+              <span class="dot dot-green"></span>
+            </div>
+            <span class="terminal-title">sancode</span>
+          </div>
+          <div class="terminal-body" id="terminal-demo"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="principles">
+      <div class="container">
+        <div class="section-header">
+          <h2>Principles</h2>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-header">
+              <div class="feature-icon">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M3 6h18" />
+                  <path d="M8 6V4h8v2" />
+                  <path d="M19 6l-1 14H6L5 6" />
+                </svg>
+              </div>
+              <h3>Delete Before Create</h3>
+            </div>
+            <p>
+              First look for code to remove, reuse, or collapse. New files are
+              a last resort, not a reflex.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-header">
+              <div class="feature-icon">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 2v20" />
+                  <path d="M5 7h14" />
+                  <path d="M7 17h10" />
+                </svg>
+              </div>
+              <h3>Native Before Package</h3>
+            </div>
+            <p>
+              Use browser APIs, framework defaults, SQL, the filesystem, and
+              the standard library before adding another dependency.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-header">
+              <div class="feature-icon">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M4 7h16" />
+                  <path d="M4 12h10" />
+                  <path d="M4 17h6" />
+                </svg>
+              </div>
+              <h3>Simple Before Abstract</h3>
+            </div>
+            <p>
+              One known use case does not need providers, managers, adapters,
+              event buses, factories, or architecture theater.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-header">
+              <div class="feature-icon">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M4 4h16v16H4z" />
+                  <path d="M8 8h8" />
+                  <path d="M8 12h8" />
+                  <path d="M8 16h5" />
+                </svg>
+              </div>
+              <h3>Single File Before Architecture</h3>
+            </div>
+            <p>
+              Keep behavior close together until separation makes the current
+              code easier to understand.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-header">
+              <div class="feature-icon">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </div>
+              <h3>Working Before Perfect</h3>
+            </div>
+            <p>
+              Ship the path users need now. Polish internals after usage proves
+              the feature deserves more time.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-header">
+              <div class="feature-icon">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 2l3 7h7l-5.5 4.5L18.5 21 12 16.8 5.5 21l2-7.5L2 9h7z" />
+                </svg>
+              </div>
+              <h3>Revenue Before Scale</h3>
+            </div>
+            <p>
+              Validate demand, charge money, and talk to users before preparing
+              infrastructure for imaginary traffic.
+            </p>
+          </div>
+        </div>
+
+        <div class="features-more">
+          <button class="more-toggle" onclick="toggleSpecs()" id="specs-toggle">
+            <span class="toggle-label">More details</span>
+            <svg
+              class="more-chevron"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="specs-wrapper" id="specs-wrapper">
+          <div class="specs-list">
+            <div class="spec-row">
+              <h3 class="spec-label">Decision Tree</h3>
+              <p class="spec-value">
+                Does this already exist? Can I reuse it? Can I simplify it? Can
+                I remove it? Will users care? Will users pay? Can I launch
+                today?
+              </p>
+            </div>
+
+            <div class="spec-row">
+              <h3 class="spec-label">Startup Mode</h3>
+              <p class="spec-value">
+                Before building, ask whether the idea can be validated without
+                code, sold before development, or tested with a manual workflow
+                this week.
+              </p>
+            </div>
+
+            <div class="spec-row">
+              <h3 class="spec-label">Infrastructure Mode</h3>
+              <p class="spec-value">
+                Before adding Redis, Kubernetes, microservices, queues, workers,
+                or search clusters, prove SQLite, cron, native search, and a
+                single server cannot handle the current product.
+              </p>
+            </div>
+
+            <div class="spec-row">
+              <h3 class="spec-label">SanScore</h3>
+              <p class="spec-value">
+                Every task ends with a score out of 100 based on packages added,
+                files created, lines written, complexity introduced, and
+                infrastructure added. Higher means simpler.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <p class="footer-copy">SanCode &middot; MIT License &middot; 2026</p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
