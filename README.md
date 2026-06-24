@@ -14,6 +14,43 @@ This is not a framework. It is not a library. It is not another layer in your st
 
 SanCode is a set of rules, prompts, and workflows you can plug into Claude Code, Codex, Cursor, Windsurf, and other AI coding agents so they stop turning simple product work into architecture cosplay.
 
+## What It Does
+
+SanCode turns an AI coding agent into a stricter product engineer.
+
+It makes the agent:
+
+- Challenge whether code is needed
+- Reuse existing code before creating files
+- Avoid dependencies unless native tools are worse
+- Prefer direct implementations over abstractions
+- Push back on premature infrastructure
+- Keep startup work tied to validation, revenue, and users
+- Report a SanScore after every task
+
+SanCode does not make agents slower. It makes them harder to impress with fake progress.
+
+## How To Use
+
+1. Pick the instruction file for your agent.
+2. Copy it into your project.
+3. Tell the agent to follow SanCode before every task.
+4. Require a SanScore in the final response.
+
+Agent files:
+
+- `CLAUDE.md` for Claude Code
+- `CODEX.md` for Codex
+- `CURSOR.md` for Cursor
+
+Prompt:
+
+```text
+Apply SanCode.
+Before writing code, delete, reuse, simplify, or explain why code is required.
+End with SanScore.
+```
+
 ## Principles
 
 1. Delete before create
@@ -38,6 +75,26 @@ Before writing code ask:
 - Can I launch today?
 
 If the answer points away from code, do not write code.
+
+## Agent Behavior
+
+A SanCode-aligned agent should:
+
+- Inspect the existing project before editing
+- Prefer modifying one existing file over creating many new files
+- Explain why any new dependency is necessary
+- Avoid `utils/`, `services/`, `managers/`, `providers/`, and `core/` folders unless the project already needs them
+- Reject fake scale like Redis, Kubernetes, queues, microservices, and search clusters until current usage proves the need
+- Suggest a no-code validation path when the request is really a business question
+- Finish with the smallest working solution
+
+The agent is allowed to say:
+
+```text
+This should not be built yet.
+```
+
+That is a feature.
 
 ## Startup Mode
 
@@ -94,21 +151,7 @@ Infrastructure added: none
 
 ## Agent Files
 
-Copy the file that matches your AI coding tool into your project:
-
-- `CLAUDE.md` for Claude Code
-- `CODEX.md` for Codex
-- `CURSOR.md` for Cursor
-
 The rules are intentionally direct. They are meant to interrupt the default AI instinct to create more files, more abstractions, more packages, and more surface area than the product needs.
-
-## Landing Page
-
-The repo includes a static landing page at `index.html`, ready to deploy on Vercel.
-
-- Framework preset: Other
-- Build command: none
-- Output directory: `.`
 
 ## What SanCode Fights
 
