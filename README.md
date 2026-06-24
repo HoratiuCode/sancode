@@ -2,6 +2,8 @@
 
 Write less. Ship more.
 
+![SanCode avatar](avatar%20(3).png)
+
 SanCode is a coding standard for AI agents designed to reduce AI-generated code bloat, unnecessary abstractions, and dependency addiction.
 
 SanCode is inspired by one idea:
@@ -147,4 +149,3 @@ Before you ask an AI agent to build, ask it to remove.
 Before you ask it to architect, ask it to ship.
 
 Before you ask it to scale, ask whether anyone cares.
-
