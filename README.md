@@ -102,6 +102,14 @@ Copy the file that matches your AI coding tool into your project:
 
 The rules are intentionally direct. They are meant to interrupt the default AI instinct to create more files, more abstractions, more packages, and more surface area than the product needs.
 
+## Landing Page
+
+The repo includes a static landing page at `index.html`, ready to deploy on Vercel.
+
+- Framework preset: Other
+- Build command: none
+- Output directory: `.`
+
 ## What SanCode Fights
 
 SanCode is against:
