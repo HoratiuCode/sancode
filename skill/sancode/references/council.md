@@ -25,13 +25,17 @@ Small decision: cut to Customer, CFO, Lead.
 
 Each seat: SHIP / SIMPLIFY / KILL / DEFER, confidence 1-5. Report the tally.
 
-Unless the brain's `Visual` is `off`, draw the tally in plain ASCII, one `#` per vote:
+Draw the tally in the same 52-character box as the recap (see The box in SKILL.md), one `#` per vote, winner and count in the header:
 
 ```text
-SHIP      #         1
-SIMPLIFY  ###       3
-KILL      ##        2
-DEFER               0
++--------------------------------------------------+
+| SanCode council               KILL wins - 4 of 6 |
++--------------------------------------------------+
+| SHIP      #         1                            |
+| SIMPLIFY  #         1                            |
+| KILL      ####      4                            |
+| DEFER               0                            |
++--------------------------------------------------+
 ```
 
 Quote dissent, never average it away. DEFER needs a date, otherwise it's a KILL in a costume.

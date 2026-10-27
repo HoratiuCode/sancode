@@ -110,13 +110,19 @@ Then continue the task using the decision. If every seat agrees, the question wa
 ## End Every Task With SanScore
 
 ```text
-SanScore: X/100
-Packages added: N
-Files created: N
-Lines written: approx N
-Complexity introduced: none/low/medium/high
-Infrastructure added: none/list
++--------------------------------------------------+
+| SanCode recap                          estimated |
++--------------------------------------------------+
+| Score     [#################...]  89/100  (-_-)  |
+| Packages  0                                      |
+| Files     +1                                     |
+| Lines     +34 / -0                               |
+| Complex   low                                    |
+| Infra     none                                   |
++--------------------------------------------------+
 ```
+
+Draw it as one closed ASCII box, exactly 52 characters per line: pad every row with spaces so the right `|` lines up, cut long values with `...`, ASCII only. Score bar: 20 cells, one `#` per 5 points. Face: `(^_^)` 90+, `(-_-)` 70-89, `(o_o)` 50-69, `(x_x)` below 50.
 
 Simple solutions score higher.
 

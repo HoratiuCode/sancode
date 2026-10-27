@@ -13,7 +13,7 @@
     <meta property="og:title" content="SanCode — AI Coding Standard" />
     <meta
       property="og:description"
-      content="Write less. Ship more. A practical standard for Claude Code, Codex, Cursor, OpenClaw, Hermes, Windsurf, and AI coding agents that need to stop overbuilding."
+      content="Write less. Ship more. A practical standard for Claude Code, Codex, Cursor, OpenClaw, Hermes, Claude chat, Cowork, Windsurf, and AI coding agents that need to stop overbuilding."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://github.com/HoratiuCode/sancode" />
@@ -311,8 +311,8 @@ End with SanScore.</code></pre>
           <h2>A brain, not a prompt</h2>
         </div>
         <p class="section-desc">
-          Install SanCode as one skill for Claude Code, Hermes, or OpenClaw. On
-          first run it asks your rules and how you like to work. Then it
+          Install SanCode as one skill for Claude Code, Hermes, OpenClaw,
+          Claude chat, or Cowork. On first run it asks your rules and how you like to work. Then it
           remembers your project in one Markdown file, routes every task to the
           right mode, and gets sharper each time it ships.
         </p>
@@ -381,28 +381,38 @@ format a date &rarr; lib/format.ts:formatDate
           </div>
 
           <div class="code-block">
-            <div class="code-header"><span>sanscore &middot; visual: card</span></div>
-            <pre><code>+-- SanCode ---------------------------------
-|  Score    [#################...] 89  (-_-)
-|  Pkgs     [##########]  0
-|  Files    [#########.]  +1
-|  Lines    [#########.]  +34 / -0
-|  Complex  [########..]  low
-|  Infra    [##########]  none
-|  Trend    72 &gt; 81 &gt; 85 &gt; 89  up
-+--------------------------------------------</code></pre>
+            <div class="code-header"><span>recap &middot; visual: card</span></div>
+            <pre><code>+--------------------------------------------------+
+| SanCode recap                    v2.4 - measured |
++--------------------------------------------------+
+| Score     [#################...]  89/100  (-_-)  |
+| Mode      coding                                 |
+| Task      hard - opus (delegated)                |
+| Packages  [##########]  0                        |
+| Files     [#########.]  +1                       |
+| Lines     [#########.]  +34 / -0                 |
+| Complex   [########..]  low                      |
+| Infra     [##########]  none                     |
+| Trend     72 &gt; 81 &gt; 85 &gt; 89  up                  |
+| Brain     reuse +1                               |
++--------------------------------------------------+</code></pre>
           </div>
 
           <div class="code-block">
             <div class="code-header"><span>sancode status</span></div>
-            <pre><code>+-- SanCode v2.2 &middot; my-saas &middot; Solo founder ------
-|  Score    [##################..] 91  (^_^)
-|  Trend    -==#=##=## last 10  up
-|  Due      native search kill-switch in 4 days
-|  Learned  1. [outcome] use plain fetch
-|           2. [user] keeps Postgres
-+------------------------------------------------
-<span class="code-comment">Say: "forget 2" &middot; "confirm 1" &middot; "sancode setup"</span></code></pre>
+            <pre><code>+--------------------------------------------------+
+| SanCode status                    v2.4 - my-saas |
++--------------------------------------------------+
+| Score     [##################..]  91/100  (^_^)  |
+| Trend     -==#=##=##  last 10  up                |
+| Due       native search check in 4 days          |
+| Pending   2 outcomes to check                    |
+| Learned   1. [outcome] use plain fetch           |
+|           2. [user] keeps Postgres               |
+| Models    suggest - easy haiku - hard opus       |
+| Rules     4 yours - 12 reuse - 3 decisions       |
++--------------------------------------------------+
+<span class="code-comment">Say: "forget 2" - "confirm 1" - "sancode setup"</span></code></pre>
           </div>
 
           <div class="code-block">
@@ -412,9 +422,12 @@ format a date &rarr; lib/format.ts:formatDate
             </div>
             <pre><code>curl -fsSL https://raw.githubusercontent.com/HoratiuCode/sancode/main/install.sh | sh
 <span class="code-comment">SanCode installer
-[x] claude       v2.2.0   ~/.claude/skills/sancode
-[x] hermes       v2.2.0   ~/.hermes/skills/sancode
-[ ] openclaw     not found</span></code></pre>
+[x] claude       v2.4.0   ~/.claude/skills/sancode
+[x] hermes       v2.4.0   ~/.hermes/skills/sancode
+[ ] openclaw     not found</span>
+
+<span class="code-comment"># Claude chat + Cowork: build the upload file</span>
+curl -fsSL https://raw.githubusercontent.com/HoratiuCode/sancode/main/install.sh | sh -s -- --zip</code></pre>
           </div>
         </div>
       </div>
@@ -637,6 +650,15 @@ format a date &rarr; lib/format.ts:formatDate
                 Before building, ask whether the idea can be validated without
                 code, sold before development, or tested with a manual workflow
                 this week.
+              </p>
+            </div>
+
+            <div class="spec-row">
+              <h3 class="spec-label">Work Mode</h3>
+              <p class="spec-value">
+                For everything that isn&rsquo;t code, in Claude chat and Cowork:
+                answer first, one page before a deck, reuse the existing doc,
+                no new tools for a one-time job.
               </p>
             </div>
 

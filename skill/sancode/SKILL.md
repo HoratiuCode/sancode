@@ -1,43 +1,41 @@
 ---
 name: sancode
-description: Use for any coding, building, or product task. SanCode is a write-less-ship-more brain for AI agents. On first run it asks how the user thinks and codes (rules, strictness, way of working). It remembers the project in .sancode/brain.md, routes each task to Coding Mode (delete, reuse, native, simple), Startup Mode (should this be built at all), or Council Mode (6 seats decide a real technical fork), then scores the work and learns from it. "sancode status" shows the brain as a home screen. It rates each task easy, normal, or hard and suggests or switches to the right model in Claude Code and Codex. Portable across Claude Code, Hermes, and OpenClaw.
-version: 2.2.0
+description: "Write less, ship more. Use for any coding, product, or work task: remembers the project, picks Coding, Startup, Council, or Work mode, matches the model to difficulty, ends with a SanScore."
 license: MIT
-compatibility: Claude Code (~/.claude/skills), Hermes (~/.hermes/skills), OpenClaw (~/.openclaw/workspace/skills). Needs write access to the project for .sancode/brain.md. No bins, env vars, or network.
+compatibility: Claude Code, Codex, Hermes, OpenClaw, Claude chat (claude.ai), and Claude Cowork. Remembers in .sancode/brain.md where files persist; in chat, in a Project file. No network or extra tools.
 metadata:
-  openclaw:
-    emoji: "✂️"
-    homepage: https://github.com/HoratiuCode/sancode
-    always: false
-    requires:
-      bins: []
-    envVars: []
-  hermes:
-    triggers:
-      - "apply sancode"
-      - "sancode setup"
-      - "sancode status"
-      - "sancode models"
-      - "what did you learn about me"
-      - "sancode"
-      - "startup mode"
-      - "council mode"
-      - "convene the council"
-      - "should I build"
-      - "is this overbuilt"
+  version: "2.4.0"
+  homepage: https://github.com/HoratiuCode/sancode
 ---
 
 # SanCode — the brain that writes less
 
 > Every line of code must justify its existence.
 
-Your job is not impressive architecture. It is the smallest working thing that creates user value, and getting sharper about *this* project every time you work on it.
+Your job is not impressive architecture. It is the smallest working thing that creates user value, and getting sharper about *this* project every time you work on it. That holds for code and for everything else: documents, plans, research, spreadsheets.
+
+## Where you're running
+
+Check once per session and adapt. Everything else in this skill stays the same.
+
+| Surface | How to tell | Brain lives in | Score | Models |
+|---|---|---|---|---|
+| **Code**: Claude Code, Codex, Hermes, OpenClaw | Shell + project folder | `.sancode/brain.md` in the repo | measured from git | suggest / auto |
+| **Cowork**: Claude desktop | Works in a folder the user chose, often no git | `.sancode/brain.md` in that folder | estimated (measured if git exists) | suggest |
+| **Chat**: claude.ai web, desktop, mobile | No lasting files | A Project file `sancode-brain.md`, or a brain the user pasted | estimated | suggest |
+
+**Chat brain.** You can't save files between chats, so the user keeps the brain:
+
+- If a `sancode-brain.md` is in the Project files or pasted in the chat, use it as the brain.
+- If not, run Setup, then print the full brain in a `markdown` block with: `Save this as sancode-brain.md in your Project files (or paste it at the start of the next chat).`
+- When Learn finds something, end with a short `Brain update` block holding only the lines to add or change, never the whole file again. Print it at most once per reply, and only when something changed.
+- Skip the Outcome check: there is no history to read. Ask instead, once per chat, if the brain has pending entries: `Last time: <task>. Did you keep it, change it, or drop it?`
 
 ## Setup (first run)
 
 Run setup when `.sancode/brain.md` doesn't exist, or when the user says "sancode setup". Setup fills the brain before any code is written, so SanCode thinks like this user from task one.
 
-1. **Look first.** Read the repo (package files, configs, README) and fill what you can: stack, existing deps, patterns. Skim shared code (`lib/`, `utils/`, `hooks/`, `components/`, helpers) and seed the **Reuse** map with up to 15 entries. Never ask what the code already answers.
+1. **Look first.** Read the repo or folder (package files, configs, README, existing docs) and fill what you can. In chat, use whatever the user shared or uploaded. Fill: stack, existing deps, patterns. Skim shared code (`lib/`, `utils/`, `hooks/`, `components/`, helpers) and seed the **Reuse** map with up to 15 entries. Never ask what the code already answers.
 2. **Pick a preset, then ask once, in one message.** Show detected facts, the presets, then the questions. A preset fills questions 2 and 5–9; the user only answers 1, 3, 4, and anything they want to change. They can also say "defaults" (= Solo founder).
 
 | Preset | Strict | Work | Council | Brain | Visual | Models |
@@ -62,7 +60,7 @@ Preset?  [Solo founder]  Solo founder · Team repo · Prototype · custom
    just code · plan briefly then code · explain options and wait for me
 6. Council: when should it convene?  [at real forks]  at real forks · only when I ask · off
 7. Keep the brain shared (commit it) or private (.gitignore)?  [shared]
-8. Show the score as a picture?  [bar]  off · bar · card
+8. What goes in the recap box?  [bar]  off (numbers only) · bar · card
 9. Pick the model by task difficulty?  [suggest]  suggest · auto (Claude Code) · off
 ```
 
@@ -87,7 +85,7 @@ Every task runs the same five steps:
 1. **Recall**: read `.sancode/brain.md` (project root); if missing, run Setup first. If its version is older than this skill's, run **Upgrade** first. Flag any kill-switch whose date has passed, in one line. Run the **Outcome check** (below). Note the starting point for scoring: `git rev-parse --short HEAD` and `git status --porcelain`.
 2. **Route**: pick the mode (table below) and rate the task easy / normal / hard (see Model routing).
 3. **Act**: do the work under that mode's rules, constrained by what the brain knows.
-4. **Score**: measure the change (see SanScore) and end with the SanScore block.
+4. **Score**: measure the change (see SanScore) and end with the recap box (see The box).
 5. **Learn**: write back only what will change a future decision.
 
 ## Outcome check
@@ -110,20 +108,23 @@ A `[outcome]` lesson counts like a user override: follow it from then on. If two
 When the user says "sancode status" (or "what did you learn about me"), read the brain and draw this in a `text` block. Don't run a task; this is a read-only screen.
 
 ```text
-+-- SanCode v2.2 · <project> · <preset or strictness> ------
-|  Score    [##################..] 91  (^_^)
-|  Trend    -==#=##=## last 10  up
-|  Due      native search kill-switch in 4 days
-|  Pending  2 outcomes to check
-|  Learned  1. [outcome] use plain fetch (3d ago)
-|           2. [user] keeps Postgres (12d ago)
-|  Models   suggest · easy haiku · hard opus · last 10: 4E 5N 1H
-|  Rules    4 yours · 12 reuse · 3 open decisions
-+-----------------------------------------------------------
-Say: "forget 2" · "confirm 1" · "sancode setup" · "sancode visual card"
++--------------------------------------------------+
+| SanCode status                    v2.4 - my-saas |
++--------------------------------------------------+
+| Score     [##################..]  91/100  (^_^)  |
+| Trend     -==#=##=##  last 10  up                |
+| Due       native search check in 4 days          |
+| Pending   2 outcomes to check                    |
+| Learned   1. [outcome] use plain fetch           |
+|           2. [user] keeps Postgres               |
+| Models    suggest - easy haiku - hard opus       |
+| Rules     4 yours - 12 reuse - 3 decisions       |
++--------------------------------------------------+
+Say: "forget 2" - "confirm 1" - "sancode setup" - "sancode visual card"
 ```
 
-- **Score**: the latest score, drawn like the Visual bar.
+- **Box**: same rules as the recap box (see The box). Header: `SanCode status` left, `v<version> - <project>` right.
+- **Score**: the latest score, drawn like the recap's Score row.
 - **Trend**: one character per score, last 10, oldest first: `_` below 50, `.` 50–69, `-` 70–79, `=` 80–89, `#` 90+. Then up / flat / down.
 - **Due**: kill-switches past or within 14 days, soonest first. "none" if clear.
 - **Pending**: Scores entries with `outcome: pending`.
@@ -134,7 +135,7 @@ If there's no brain yet, say so and offer to run setup.
 
 ## Upgrade
 
-The brain's first line carries the version that wrote it: `# SanCode Brain · v2.2.0`. Missing version means v2.0.0.
+The brain's first line carries the version that wrote it: `# SanCode Brain · v2.4.0`. This skill's version is `metadata.version` in the frontmatter. Missing version means v2.0.0.
 
 When this skill is newer:
 
@@ -143,25 +144,28 @@ When this skill is newer:
 3. Tell the user in one line what's new, from the changelog:
 
 ```text
-SanCode 2.2.0: tasks are now rated easy / normal / hard, with model suggestions ("sancode models").
+SanCode 2.4.0: recaps, status, and council votes now come in a box.
 ```
 
 Never drop user content during an upgrade. Never re-run setup for an upgrade.
 
 Changelog:
 
+- **2.4.0**: boxed recap, status screen, and council tally (fixed 52-char ASCII box).
+- **2.3.0**: runs in Claude chat and Cowork (brain in a Project file, model suggestions via the picker), Work Mode for non-code tasks, spec-compliant frontmatter for claude.ai upload.
 - **2.2.0**: model routing: rate tasks easy / normal / hard, suggest or delegate to the right model (Claude Code, Codex).
 - **2.1.0**: `sancode status` home screen, setup presets, brain versioning, installer with `--update`.
 - **2.0.0**: brain file, setup questions, outcome check, measured SanScore, Reuse map, ASCII visual.
 
 ## Route
 
-Run the first mode that matches, then finish the work in Coding Mode.
+Run the first mode that matches, then finish the work in Coding Mode (or Work Mode for non-code deliverables).
 
 | Signal | Mode |
 |---|---|
 | "startup mode", or a feature/product whose value is unproven | **Startup** |
 | "council" / "council mode", or a real fork (below) | **Council** |
+| A non-code deliverable: document, plan, research, spreadsheet, deck, email, analysis | **Work** |
 | Anything else: writing, editing, fixing, reviewing code | **Coding** |
 
 The user can force a mode: "sancode startup", "sancode council", "sancode code", or rerun "sancode setup" to change rules and settings, or "sancode status" for the home screen. "sancode models suggest|auto|off" changes model routing; "sancode models hard=opus easy=haiku" changes tiers. "sancode visual card" (or bar / off) switches the visual on the spot.
@@ -175,9 +179,9 @@ Match the model to the task: cheap and fast for easy work, the strongest model f
 
 | Rating | Signals |
 |---|---|
-| **easy** | Typo, copy, rename, config value, one small change in one file, a question answered from the code |
+| **easy** | Typo, copy, rename, config value, one small change in one file, a quick factual answer, a short email |
 | **normal** | A feature or fix that follows existing patterns, a few files, cause is known |
-| **hard** | Unknown cause of a bug, many files, migration, security, concurrency, performance, architecture, anything Council Mode convenes for |
+| **hard** | Unknown cause of a bug, many files, migration, security, concurrency, performance, architecture, deep research, a high-stakes plan or analysis, anything Council Mode convenes for |
 
 Council Mode and Startup Mode on a large product question always count as **hard**.
 
@@ -200,6 +204,8 @@ Council Mode and Startup Mode on a large product question always count as **hard
   - Easy and mechanical in bulk (many renames, boilerplate across files): send it to a subagent with the easy-tier model.
   - A single small easy task: do it yourself. Starting a subagent costs more than it saves.
 - **off**: never rate out loud and never suggest.
+
+In chat and Cowork you can't switch models or start subagents, so **auto acts like suggest**: `Hard task. Pick Opus in the model picker for this one.` or `Easy task. Haiku in the model picker is enough.`
 
 If you don't know which model you're running, report only the rating.
 
@@ -239,6 +245,24 @@ Output **Verdict** (BUILD / VALIDATE FIRST / DON'T BUILD) and a **Smallest next 
 
 "This should not be built yet" is a feature.
 
+## Work Mode
+
+SanCode for everything that isn't code: in chat, in Cowork, or in a repo.
+
+Before making anything, ask silently:
+
+1. What decision or action will this output drive? If none, say so.
+2. Does it already exist (a doc, template, sheet, earlier answer)? Update it instead.
+3. What's the smallest output that does the job: a sentence, a table, one page?
+4. Can it ship today?
+
+- **Answer first.** The result in the first lines, detail after.
+- **One output before many.** One page before a deck. One sheet before a dashboard. One message before a doc.
+- **Reuse before create.** Edit the existing file or template rather than starting fresh.
+- **No tools for one-time jobs.** No new app, subscription, integration, or automation for something done once.
+- **Cut what nobody reads.** No filler intros, repeated summaries, or appendices nobody asked for.
+- **Startup check still applies.** A pitch deck before talking to a customer, or a 20-page plan before a first sale, gets challenged.
+
 ## Council Mode
 
 Convene when the user asks, or on your own **before acting** when a coding task hits a real fork:
@@ -249,7 +273,7 @@ Convene when the user asks, or on your own **before acting** when a coding task 
 - Ship now vs keep polishing
 - Two reasonable approaches with different costs
 
-Never for routine edits, bug fixes, or questions with one obvious answer, and never for a fork the brain already decided (cite the decision instead, unless its kill-switch fired).
+In Work Mode it convenes for real business or work forks too (which tool to adopt, hire vs do it yourself, which plan to commit to). Never for routine edits, bug fixes, or questions with one obvious answer, and never for a fork the brain already decided (cite the decision instead, unless its kill-switch fired).
 
 Load `references/council.md`, follow it, record the decision, then continue in Coding Mode.
 
@@ -258,7 +282,7 @@ Load `references/council.md`, follow it, record the decision, then continue in C
 `.sancode/brain.md`, one file, plain Markdown, max ~120 lines. Format:
 
 ```markdown
-# SanCode Brain · v2.2.0
+# SanCode Brain · v2.4.0
 
 ## Profile
 - Building: <one line>
@@ -302,7 +326,7 @@ Learning rules:
 - **Overrides are lessons.** When the user rejects a SanCode call ("no, use the package"), record it once and follow it from then on.
 - **Prune.** Over the limit? Never touch Settings or Rules. Merge duplicates, drop closed decisions older than 90 days, keep the last 10 scores (never drop a `pending` one).
 - **Trend.** If the last 3 scores are below 70, say so and name the pattern dragging them down.
-- Say what you learned in one line: `Brain updated: <what>`.
+- Say what you learned in the recap's `Brain` row.
 
 ## SanScore
 
@@ -326,53 +350,112 @@ Score, starting at 100, clamped to 0–100:
 
 Not a git repo: estimate the same factors and mark the score `(estimated)`.
 
-End every task with:
+**Work Mode** scores the output instead, always `estimated`:
+
+| Factor | Points |
+|---|---|
+| Each extra deliverable beyond what was asked | −10 |
+| Each new tool, service, or automation | −15 |
+| Each 300 words beyond what the job needed | −2 (max −20) |
+| Reused or updated an existing doc instead of a new one | +5 |
+| Complexity none / low / medium / high | 0 / −5 / −15 / −30 |
+
+End every task with the recap box.
+
+## The box
+
+Every recap, status screen, and council tally is one closed ASCII box in a `text` code block. Plain ASCII only, so it lines up in every terminal and chat.
 
 ```text
-SanScore: X/100 (measured | estimated)
-Mode: coding / startup / council
-Task: easy / normal / hard · <model> (current | suggested | delegated)
-Packages added: N
-Files created: N
-Lines: +N / -N
-Complexity introduced: none/low/medium/high
-Infrastructure added: none/list
-Brain updated: <one line, or "nothing new">
++--------------------------------------------------+
+| SanCode recap                    v2.4 - measured |
++--------------------------------------------------+
+| Score     [#################...]  89/100  (-_-)  |
+| Mode      coding                                 |
+| Task      normal - opus (current)                |
+| Packages  0                                      |
+| Files     +1                                     |
+| Lines     +34 / -0                               |
+| Complex   low                                    |
+| Infra     none                                   |
+| Trend     72 > 81 > 85 > 89  up                  |
+| Brain     reuse +1                               |
++--------------------------------------------------+
+```
+
+Box rules:
+
+- **Exactly 52 characters per line**, borders included. Pad every row with spaces so the right `|` lines up. Count before you print.
+- Border lines are `+` + 50 `-` + `+`. Rows are `| ` + 48 characters + ` |`.
+- Header row: name left (`SanCode recap`), `v<version> - measured` or `- estimated` right. Then a border line.
+- Each row: label padded to 9 characters, one space, then the value. A second line of the same field leaves the label blank.
+- A value too long for the row: cut it and end with `...`. Never let it push the border.
+- ASCII only inside the box: use `-` as a separator, not `·`, and no emoji.
+- Leave out rows that don't apply (Task when Models is off, Trend with fewer than 2 scores).
+
+Rows, in order: Score, Mode, Task, Packages, Files, Lines, Complex, Infra, Trend, Brain. In Work Mode, replace Packages / Files / Lines / Complex / Infra with `Output` (deliverables and approx words), `Tools` (new tools or `none`), and `Reused` (what was updated instead of created):
+
+```text
++--------------------------------------------------+
+| SanCode recap                   v2.4 - estimated |
++--------------------------------------------------+
+| Score     [##################..]  92/100  (^_^)  |
+| Mode      work                                   |
+| Task      easy - sonnet (current)                |
+| Output    1 page, approx 350 words               |
+| Tools     none                                   |
+| Reused    pricing.md updated                     |
+| Brain     nothing new                            |
++--------------------------------------------------+
 ```
 
 Higher means simpler. Then append the Scores entry with the files touched, the starting sha, and `outcome: pending`.
 
 ## Visual
 
-Draw above the SanScore block, in a `text` code block, plain ASCII only (renders in every terminal and chat). Follow the brain's `Visual` setting; default `bar`.
+The brain's `Visual` setting changes what goes inside the box. Default `bar`.
 
-**Bar**: 20 cells, one `#` per 5 points, `.` for the rest, then the face and the last 5 scores from the brain:
+**bar**: the Score row gets a 20-cell bar, one `#` per 5 points, `.` for the rest, then the score and the face (example above).
 
-```text
-[#################...] 89/100 (-_-)  trend 72 > 81 > 85 > 89  up
-```
-
-**Card**: one line per factor, each bar 10 cells. Fill = how much of the budget stayed clean (full = nothing added).
+**card**: the Packages, Files, Lines, Complex, and Infra rows also get a 10-cell bar. Full = nothing added.
 
 ```text
-+-- SanCode ---------------------------------
-|  Score    [#################...] 89  (-_-)
-|  Pkgs     [##########]  0
-|  Files    [#########.]  +1
-|  Lines    [#########.]  +34 / -0
-|  Complex  [########..]  low
-|  Infra    [##########]  none
-|  Task     hard · opus (delegated)
-|  Trend    72 > 81 > 85 > 89  up
-|  Brain    reuse +1
-+--------------------------------------------
++--------------------------------------------------+
+| SanCode recap                    v2.4 - measured |
++--------------------------------------------------+
+| Score     [#################...]  89/100  (-_-)  |
+| Mode      coding                                 |
+| Task      hard - opus (delegated)                |
+| Packages  [##########]  0                        |
+| Files     [#########.]  +1                       |
+| Lines     [#########.]  +34 / -0                 |
+| Complex   [########..]  low                      |
+| Infra     [##########]  none                     |
+| Trend     72 > 81 > 85 > 89  up                  |
+| Brain     reuse +1                               |
++--------------------------------------------------+
 ```
 
-Cell rules for the card (10 cells each): Pkgs −5 per package; Files −1 per file; Lines −1 per 20 net added; Complex none 10 / low 8 / medium 5 / high 2; Infra −5 per piece. Never below 0.
+Card cells (10 each): Packages −5 per package; Files −1 per file; Lines −1 per 20 net added; Complex none 10 / low 8 / medium 5 / high 2; Infra −5 per piece. Never below 0.
+
+**off**: the same box, no bars and no face.
+
+```text
++--------------------------------------------------+
+| SanCode recap                   v2.4 - estimated |
++--------------------------------------------------+
+| Score     89/100                                 |
+| Mode      coding                                 |
+| Packages  0                                      |
+| Files     +1                                     |
+| Lines     +34 / -0                               |
+| Complex   low                                    |
+| Infra     none                                   |
++--------------------------------------------------+
+```
 
 Face: `(^_^)` 90+, `(-_-)` 70–89, `(o_o)` 50–69, `(x_x)` below 50.
-Trend: last 5 scores oldest to newest, then `up` / `flat` / `down` (newest vs average of the rest, ±3 is flat). Fewer than 2 scores: omit the trend.
-Off: print only the SanScore block.
+Trend: last 5 scores oldest to newest, then `up` / `flat` / `down` (newest vs average of the rest, ±3 is flat).
 
 ## Install
 
@@ -382,6 +465,8 @@ The folder must be named `sancode`.
 curl -fsSL https://raw.githubusercontent.com/HoratiuCode/sancode/main/install.sh | sh
 ```
 
-The installer finds Claude Code, Hermes, and OpenClaw and installs into each. Add `-s -- --update` to update or `-s -- --uninstall` to remove. Manual install: copy `skill/sancode` into `~/.claude/skills/`, `~/.hermes/skills/`, or `~/.openclaw/workspace/skills/`.
+The installer finds Claude Code, Hermes, and OpenClaw and installs into each.
+
+**Claude chat and Cowork** share one skill library. Build the upload file with `... | sh -s -- --zip` (writes `sancode.zip`), then upload it in claude.ai under Settings → Capabilities → Skills. Needs a paid plan with code execution on. In Cowork it appears automatically. Add `-s -- --update` to update or `-s -- --uninstall` to remove. Manual install: copy `skill/sancode` into `~/.claude/skills/`, `~/.hermes/skills/`, or `~/.openclaw/workspace/skills/`.
 
 Commit `.sancode/brain.md` to share the brain with your team, or add `.sancode/` to `.gitignore` to keep it personal.

@@ -7,10 +7,10 @@
     .h{font:600 28px -apple-system,'Segoe UI',Inter,sans-serif;fill:#ffffff}
     .sub{font:400 16px -apple-system,'Segoe UI',Inter,sans-serif;fill:#8c8c8c}
     .lbl{font:600 12px ui-monospace,'JetBrains Mono',Menlo,monospace;fill:#707070;letter-spacing:.08em}
-    .m{font:400 15px ui-monospace,'JetBrains Mono',Menlo,monospace;fill:#f2f2f2;white-space:pre}
+    .m{font:400 13.5px ui-monospace,'JetBrains Mono',Menlo,monospace;fill:#f2f2f2;white-space:pre}
     .dim{fill:#707070}
     .ok{fill:#6ee7a0}
-    .acc{fill:#ffffff;font-weight:700}
+    .acc{fill:#ffffff}
     .step{fill:#161616;stroke:#ffffff;stroke-opacity:.14}
     .stepn{font:600 13px ui-monospace,Menlo,monospace;fill:#8c8c8c}
     .stept{font:600 17px -apple-system,'Segoe UI',Inter,sans-serif;fill:#ffffff}
@@ -30,7 +30,7 @@
 
   <!-- Header -->
   <text class="h" x="48" y="66">SanCode — a brain, not a prompt</text>
-  <text class="sub" x="48" y="94">One skill for Claude Code, Hermes, and OpenClaw. It remembers the project, routes each task, measures the work, and learns.</text>
+  <text class="sub" x="48" y="94">One skill for Claude Code, Codex, Hermes, OpenClaw, Claude chat, and Cowork. Remembers, routes, measures, learns.</text>
 
   <!-- Loop -->
   <text class="lbl" x="48" y="140">EVERY TASK</text>
@@ -91,19 +91,23 @@
   <text class="m" x="66" y="606">KILL      <tspan class="acc">##</tspan>        2</text>
 
   <!-- SanScore card -->
-  <text class="lbl" x="580" y="300">SANSCORE · VISUAL: CARD</text>
+  <text class="lbl" x="580" y="300">RECAP · VISUAL: CARD</text>
   <rect class="panel" x="580" y="314" width="572" height="300" rx="10"/>
   <circle cx="602" cy="334" r="5" fill="#ff5f57"/>
   <circle cx="620" cy="334" r="5" fill="#febc2e"/>
   <circle cx="638" cy="334" r="5" fill="#28c840"/>
-  <text class="m" x="604" y="374"><tspan class="dim">+-- SanCode ------------------------------</tspan></text>
-  <text class="m" x="604" y="400"><tspan class="dim">|</tspan>  Score    [<tspan class="acc">#################</tspan><tspan class="dim">...</tspan>] 89  (-_-)</text>
-  <text class="m" x="604" y="424"><tspan class="dim">|</tspan>  Pkgs     [<tspan class="ok">##########</tspan>]  0</text>
-  <text class="m" x="604" y="448"><tspan class="dim">|</tspan>  Files    [<tspan class="ok">#########</tspan><tspan class="dim">.</tspan>]  +1</text>
-  <text class="m" x="604" y="472"><tspan class="dim">|</tspan>  Lines    [<tspan class="ok">#########</tspan><tspan class="dim">.</tspan>]  +34 / -0</text>
-  <text class="m" x="604" y="496"><tspan class="dim">|</tspan>  Complex  [<tspan class="ok">########</tspan><tspan class="dim">..</tspan>]  low</text>
-  <text class="m" x="604" y="520"><tspan class="dim">|</tspan>  Infra    [<tspan class="ok">##########</tspan>]  none</text>
-  <text class="m" x="604" y="544"><tspan class="dim">|</tspan>  Trend    72 &gt; 81 &gt; 85 &gt; 89  up</text>
-  <text class="m" x="604" y="568"><tspan class="dim">|</tspan>  Brain    reuse +1</text>
-  <text class="m" x="604" y="594"><tspan class="dim">+-----------------------------------------</tspan></text>
+  <text class="m" x="600" y="362"><tspan class="dim">+--------------------------------------------------+</tspan></text>
+  <text class="m" x="600" y="379"><tspan class="dim">|</tspan> SanCode recap                    v2.4 - measured <tspan class="dim">|</tspan></text>
+  <text class="m" x="600" y="396"><tspan class="dim">+--------------------------------------------------+</tspan></text>
+  <text class="m" x="600" y="413"><tspan class="dim">|</tspan> Score     [<tspan class="acc">#################</tspan><tspan class="dim">...</tspan>]  89/100  (-_-)  <tspan class="dim">|</tspan></text>
+  <text class="m" x="600" y="430"><tspan class="dim">|</tspan> Mode      coding                                 <tspan class="dim">|</tspan></text>
+  <text class="m" x="600" y="447"><tspan class="dim">|</tspan> Task      hard - opus (delegated)                <tspan class="dim">|</tspan></text>
+  <text class="m" x="600" y="464"><tspan class="dim">|</tspan> Packages  [<tspan class="ok">##########</tspan><tspan class="dim"></tspan>]  0                        <tspan class="dim">|</tspan></text>
+  <text class="m" x="600" y="481"><tspan class="dim">|</tspan> Files     [<tspan class="ok">#########</tspan><tspan class="dim">.</tspan>]  +1                       <tspan class="dim">|</tspan></text>
+  <text class="m" x="600" y="498"><tspan class="dim">|</tspan> Lines     [<tspan class="ok">#########</tspan><tspan class="dim">.</tspan>]  +34 / -0                 <tspan class="dim">|</tspan></text>
+  <text class="m" x="600" y="515"><tspan class="dim">|</tspan> Complex   [<tspan class="ok">########</tspan><tspan class="dim">..</tspan>]  low                      <tspan class="dim">|</tspan></text>
+  <text class="m" x="600" y="532"><tspan class="dim">|</tspan> Infra     [<tspan class="ok">##########</tspan><tspan class="dim"></tspan>]  none                     <tspan class="dim">|</tspan></text>
+  <text class="m" x="600" y="549"><tspan class="dim">|</tspan> Trend     72 &gt; 81 &gt; 85 &gt; 89  up                  <tspan class="dim">|</tspan></text>
+  <text class="m" x="600" y="566"><tspan class="dim">|</tspan> Brain     reuse +1                               <tspan class="dim">|</tspan></text>
+  <text class="m" x="600" y="583"><tspan class="dim">+--------------------------------------------------+</tspan></text>
 </svg>

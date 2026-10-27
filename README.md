@@ -8,7 +8,7 @@ SanCode is a coding standard for AI agents that cuts AI-generated code bloat, un
 
 > Every line of code must justify its existence.
 
-It is not a framework, a library, or another layer in your stack. It is a set of rules, and now a **skill with a brain**, that you plug into Claude Code, Codex, Cursor, OpenClaw, Hermes Agent, Windsurf, and other AI coding agents so they stop turning simple product work into architecture cosplay.
+It is not a framework, a library, or another layer in your stack. It is a set of rules, and now a **skill with a brain**, that you plug into Claude Code, Codex, Cursor, OpenClaw, Hermes Agent, Windsurf, Claude chat, and Claude Cowork so they stop turning simple product work into architecture cosplay.
 
 ![SanCode brain: the loop, the modes, and the SanScore card](assets/sancode-brain.svg)
 
@@ -22,8 +22,8 @@ curl -fsSL https://raw.githubusercontent.com/HoratiuCode/sancode/main/install.sh
 
 ```text
 SanCode installer
-[x] claude       v2.2.0   ~/.claude/skills/sancode
-[x] hermes       v2.2.0   ~/.hermes/skills/sancode
+[x] claude       v2.4.0   ~/.claude/skills/sancode
+[x] hermes       v2.4.0   ~/.hermes/skills/sancode
 [ ] openclaw     not found
 Done. Open any project and ask for code: SanCode runs setup on first use.
 ```
@@ -35,6 +35,14 @@ Done. Open any project and ask for code: SanCode runs setup on first use.
 | One agent only | `... \| sh -s -- --only claude` |
 
 Updates never touch your project brains. They upgrade themselves on the next task and tell you what's new. Prefer manual? Copy `skill/sancode` into `~/.claude/skills/`, `~/.hermes/skills/`, or `~/.openclaw/workspace/skills/`.
+
+**Claude chat and Cowork.** One upload covers both: they share your skill library.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/HoratiuCode/sancode/main/install.sh | sh -s -- --zip     # writes sancode.zip
+```
+
+Upload `sancode.zip` at claude.ai under **Settings → Capabilities → Skills** (paid plan, code execution on). It works in chat right away and appears in Cowork automatically.
 
 **Option 2: one rules file.** Any agent, no memory. Copy the file for your agent into your project:
 
@@ -53,6 +61,16 @@ Apply SanCode.
 Before writing code, delete, reuse, simplify, or explain why code is required.
 End with SanScore.
 ```
+
+## Where It Runs
+
+| Surface | Brain lives in | SanScore | Model routing |
+|---|---|---|---|
+| **Claude Code, Codex, Hermes, OpenClaw** | `.sancode/brain.md` in the repo | measured from git | suggest / auto |
+| **Claude Cowork** | `.sancode/brain.md` in the folder you chose | estimated (measured if git) | suggest |
+| **Claude chat** (web, desktop, mobile) | `sancode-brain.md` in your Project files | estimated | suggest via model picker |
+
+In chat, Claude can't save files between conversations, so you keep the brain: after setup SanCode prints it once for you to save as a Project file. After that it only prints a short `Brain update` with the lines to add, and only when it learned something. Instead of checking git, it asks once: "Last time: add search. Did you keep it, change it, or drop it?"
 
 ## How the Brain Works
 
@@ -110,17 +128,19 @@ From then on it follows that lesson like a direct instruction. If you overrule i
 Say `sancode status` to open the brain:
 
 ```text
-+-- SanCode v2.2 · my-saas · Solo founder ---------------
-|  Score    [##################..] 91  (^_^)
-|  Trend    -==#=##=## last 10  up
-|  Due      native search kill-switch in 4 days
-|  Pending  2 outcomes to check
-|  Learned  1. [outcome] use plain fetch (3d ago)
-|           2. [user] keeps Postgres (12d ago)
-|  Models   suggest · easy haiku · hard opus
-|  Rules    4 yours · 12 reuse · 3 open decisions
-+--------------------------------------------------------
-Say: "forget 2" · "confirm 1" · "sancode setup" · "sancode visual card"
++--------------------------------------------------+
+| SanCode status                    v2.4 - my-saas |
++--------------------------------------------------+
+| Score     [##################..]  91/100  (^_^)  |
+| Trend     -==#=##=##  last 10  up                |
+| Due       native search check in 4 days          |
+| Pending   2 outcomes to check                    |
+| Learned   1. [outcome] use plain fetch           |
+|           2. [user] keeps Postgres               |
+| Models    suggest - easy haiku - hard opus       |
+| Rules     4 yours - 12 reuse - 3 decisions       |
++--------------------------------------------------+
+Say: "forget 2" - "confirm 1" - "sancode setup" - "sancode visual card"
 ```
 
 Everything SanCode learned about you is visible, and you can delete or confirm any lesson.
@@ -164,6 +184,18 @@ Say "startup mode", or SanCode switches to it when a feature's value is unproven
 
 Returns **BUILD**, **VALIDATE FIRST**, or **DON'T BUILD**, plus one step doable in under 48 hours. Many "technical tasks" are fear or fake progress wearing a hoodie. "This should not be built yet" is a feature.
 
+### Work Mode
+
+SanCode for everything that isn't code: documents, plans, research, spreadsheets, decks, emails. It's the default for non-code tasks in chat and Cowork.
+
+- **Answer first**: the result in the first lines, detail after
+- **One output before many**: one page before a deck, one sheet before a dashboard
+- **Reuse before create**: update the existing doc or template
+- **No tools for one-time jobs**: no new app, subscription, or automation for something done once
+- **Cut what nobody reads**: no filler intros or repeated summaries
+
+Its SanScore counts extra deliverables, new tools, and words beyond what the job needed, and gives points back for reusing an existing doc.
+
 ### Council Mode
 
 Startup Mode asks *whether* to build. Council Mode decides *how* at a real fork: a new dependency, new infrastructure, a rewrite, build vs buy, ship vs polish. Say "council mode", or SanCode convenes it before acting. Never for routine edits or bug fixes, and never twice for the same question.
@@ -194,7 +226,7 @@ SanCode rates every task **easy**, **normal**, or **hard**, and matches the mode
 | Setting | What happens |
 |---|---|
 | **suggest** (default) | One line when the model doesn't fit, e.g. `Hard task. Stronger model: /model opus`. Never nags: once per direction per session. |
-| **auto** | Claude Code hands the hard part (diagnosis, plan, council) to an `opus` subagent, and bulk mechanical work to a `haiku` subagent. Codex can't switch its own model, so it falls back to suggest. |
+| **auto** | Claude Code hands the hard part (diagnosis, plan, council) to an `opus` subagent, and bulk mechanical work to a `haiku` subagent. Codex, Claude chat, and Cowork can't switch models mid-task, so they fall back to suggest (in chat: "pick Opus in the model picker"). |
 | **off** | No ratings, no suggestions. |
 
 Change it with `sancode models auto`, or the tiers with `sancode models hard=opus easy=haiku`. If you ignore the same suggestion three times, SanCode stops making it.
@@ -228,32 +260,62 @@ Every task ends with a score out of 100. Higher means simpler. In a git repo it 
 | Complexity low / medium / high | −5 / −15 / −30 |
 | Each piece of infrastructure | −15 |
 
-### Visual
+### The recap box
 
-Pick a style at setup, or say `sancode visual bar`, `sancode visual card`, or `sancode visual off`. Plain ASCII, so it renders in every terminal and chat.
+Every task ends with one closed box, 52 characters wide, plain ASCII, so it lines up in any terminal or chat. Pick what goes inside at setup, or say `sancode visual bar`, `card`, or `off`.
 
-**Bar** (default):
-
-```text
-[#################...] 89/100 (-_-)  trend 72 > 81 > 85 > 89  up
-```
-
-**Card**:
+**bar** (default): a score bar and a face.
 
 ```text
-+-- SanCode ---------------------------------
-|  Score    [#################...] 89  (-_-)
-|  Pkgs     [##########]  0
-|  Files    [#########.]  +1
-|  Lines    [#########.]  +34 / -0
-|  Complex  [########..]  low
-|  Infra    [##########]  none
-|  Trend    72 > 81 > 85 > 89  up
-|  Brain    reuse +1
-+--------------------------------------------
++--------------------------------------------------+
+| SanCode recap                    v2.4 - measured |
++--------------------------------------------------+
+| Score     [#################...]  89/100  (-_-)  |
+| Mode      coding                                 |
+| Task      normal - opus (current)                |
+| Packages  0                                      |
+| Files     +1                                     |
+| Lines     +34 / -0                               |
+| Complex   low                                    |
+| Infra     none                                   |
+| Trend     72 > 81 > 85 > 89  up                  |
+| Brain     reuse +1                               |
++--------------------------------------------------+
 ```
 
-Faces: `(^_^)` 90+, `(-_-)` 70–89, `(o_o)` 50–69, `(x_x)` below 50. Council votes get a tally chart too.
+**card**: every factor gets its own bar. Full means nothing was added.
+
+```text
++--------------------------------------------------+
+| SanCode recap                    v2.4 - measured |
++--------------------------------------------------+
+| Score     [#################...]  89/100  (-_-)  |
+| Mode      coding                                 |
+| Task      hard - opus (delegated)                |
+| Packages  [##########]  0                        |
+| Files     [#########.]  +1                       |
+| Lines     [#########.]  +34 / -0                 |
+| Complex   [########..]  low                      |
+| Infra     [##########]  none                     |
+| Trend     72 > 81 > 85 > 89  up                  |
+| Brain     reuse +1                               |
++--------------------------------------------------+
+```
+
+**off**: the same box, numbers only. In Work Mode the rows become Output, Tools, and Reused.
+
+Faces: `(^_^)` 90+, `(-_-)` 70–89, `(o_o)` 50–69, `(x_x)` below 50. The status screen and council votes use the same box:
+
+```text
++--------------------------------------------------+
+| SanCode council               KILL wins - 4 of 6 |
++--------------------------------------------------+
+| SHIP      #         1                            |
+| SIMPLIFY  #         1                            |
+| KILL      ####      4                            |
+| DEFER               0                            |
++--------------------------------------------------+
+```
 
 ## Commands
 
