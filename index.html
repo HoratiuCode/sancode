@@ -13,7 +13,7 @@
     <meta property="og:title" content="SanCode — AI Coding Standard" />
     <meta
       property="og:description"
-      content="Write less. Ship more. A practical standard for Claude Code, Codex, Cursor, Windsurf, and AI coding agents that need to stop overbuilding."
+      content="Write less. Ship more. A practical standard for Claude Code, Codex, Cursor, OpenClaw, Hermes, Windsurf, and AI coding agents that need to stop overbuilding."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://github.com/HoratiuCode/sancode" />
@@ -68,6 +68,7 @@
         </div>
         <div class="nav-links">
           <a href="#start">Start</a>
+          <a href="#brain">Brain</a>
           <a href="#examples">Examples</a>
           <a href="#principles">Principles</a>
           <a
@@ -89,6 +90,7 @@
         </button>
         <div class="nav-mobile" id="nav-mobile">
           <a href="#start" onclick="toggleMobileNav()">Start</a>
+          <a href="#brain" onclick="toggleMobileNav()">Brain</a>
           <a href="#examples" onclick="toggleMobileNav()">Examples</a>
           <a href="#principles" onclick="toggleMobileNav()">Principles</a>
           <a
@@ -191,8 +193,8 @@
             </div>
           </div>
           <p class="install-note" id="install-note">
-            Copy CLAUDE.md, CODEX.md, or CURSOR.md into your project. No
-            package. No runtime. No framework.
+            Copy CLAUDE.md, CODEX.md, CURSOR.md, OPENCLAW.md, or HERMES.md
+            into your project. No package. No runtime. No framework.
           </p>
         </div>
       </div>
@@ -248,14 +250,16 @@
                   <button
                     class="copy-btn"
                     onclick="copyText(this)"
-                    data-text="CLAUDE.md CODEX.md CURSOR.md"
+                    data-text="CLAUDE.md CODEX.md CURSOR.md OPENCLAW.md HERMES.md"
                   >
                     Copy
                   </button>
                 </div>
-                <pre><code>CLAUDE.md  <span class="code-comment"># Claude Code</span>
-CODEX.md   <span class="code-comment"># Codex</span>
-CURSOR.md  <span class="code-comment"># Cursor</span></code></pre>
+                <pre><code>CLAUDE.md    <span class="code-comment"># Claude Code</span>
+CODEX.md     <span class="code-comment"># Codex</span>
+CURSOR.md    <span class="code-comment"># Cursor</span>
+OPENCLAW.md  <span class="code-comment"># OpenClaw (workspace AGENTS.md)</span>
+HERMES.md    <span class="code-comment"># Hermes Agent</span></code></pre>
               </div>
               <p class="step-note">
                 Drop the matching file into your repo so your agent stops
@@ -297,6 +301,107 @@ End with SanScore.</code></pre>
             SanCode is not software you install. It is pressure you apply to AI
             agents before they bury your startup in code nobody asked for.
           </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="brain">
+      <div class="container">
+        <div class="section-header">
+          <h2>A brain, not a prompt</h2>
+        </div>
+        <p class="section-desc">
+          Install SanCode as one skill for Claude Code, Hermes, or OpenClaw. On
+          first run it asks your rules and how you like to work. Then it
+          remembers your project in one Markdown file, routes every task to the
+          right mode, and gets sharper each time it ships.
+        </p>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-header">
+              <div class="feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" /></svg>
+              </div>
+              <h3>Coding Mode</h3>
+            </div>
+            <p>
+              The default brain. Delete before create, native before package, one file before architecture. Runs on every task.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-header">
+              <div class="feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6" /><path d="M5 12H2" /><path d="M22 12h-3" /><circle cx="12" cy="14" r="6" /></svg>
+              </div>
+              <h3>Startup Mode</h3>
+            </div>
+            <p>
+              Asks whether it should be built at all. Returns BUILD, VALIDATE FIRST, or DON&rsquo;T BUILD, plus a next step under 48 hours.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-header">
+              <div class="feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3" /><circle cx="17" cy="9" r="2.5" /><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" /><path d="M15 14.5c3 .2 6 2 6 5.5" /></svg>
+              </div>
+              <h3>Council Mode</h3>
+            </div>
+            <p>
+              At a real fork, six seats argue, vote, and return one decision with a kill-switch. Convenes itself before new packages, rewrites, or infrastructure.
+            </p>
+          </div>
+        </div>
+
+        <div class="brain-blocks">
+          <div class="code-block">
+            <div class="code-header"><span>every task</span></div>
+            <pre><code>0 Setup   <span class="code-comment"># first run: asks your rules and way of coding</span>
+1 Recall  <span class="code-comment"># read brain.md, check what happened to past code</span>
+2 Route   <span class="code-comment"># coding, startup, or council</span>
+3 Act     <span class="code-comment"># smallest working change</span>
+4 Score   <span class="code-comment"># measured from git diff, not guessed</span>
+5 Learn   <span class="code-comment"># keep only what changes the next decision</span></code></pre>
+          </div>
+
+          <div class="code-block">
+            <div class="code-header"><span>.sancode/brain.md</span></div>
+            <pre><code><span class="code-comment">## Settings</span>
+Strictness: balanced &middot; Council: at real forks
+<span class="code-comment">## Rules</span>
+Always: ask before any new dependency
+<span class="code-comment">## Reuse</span>
+format a date &rarr; lib/format.ts:formatDate
+<span class="code-comment">## Decisions</span>
+2026-10-27 | Native search, no Elasticsearch
+  kill-switch: p95 &gt; 300ms by 2026-12-01
+<span class="code-comment">## Lessons</span>
+[user] Keeps Postgres. Don&rsquo;t argue SQLite.
+[outcome] Rewrote my fetch wrapper: use plain fetch.</code></pre>
+          </div>
+
+          <div class="code-block">
+            <div class="code-header"><span>sanscore &middot; visual: card</span></div>
+            <pre><code>+-- SanCode ---------------------------------
+|  Score    [#################...] 89  (-_-)
+|  Pkgs     [##########]  0
+|  Files    [#########.]  +1
+|  Lines    [#########.]  +34 / -0
+|  Complex  [########..]  low
+|  Infra    [##########]  none
+|  Trend    72 &gt; 81 &gt; 85 &gt; 89  up
++--------------------------------------------</code></pre>
+          </div>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span>install the skill</span>
+              <button class="copy-btn" onclick="copyText(this)" data-text="cp -r skill/sancode ~/.claude/skills/sancode">Copy</button>
+            </div>
+            <pre><code>cp -r skill/sancode ~/.claude/skills/sancode              <span class="code-comment"># Claude Code</span>
+cp -r skill/sancode ~/.hermes/skills/sancode              <span class="code-comment"># Hermes</span>
+cp -r skill/sancode ~/.openclaw/workspace/skills/sancode  <span class="code-comment"># OpenClaw</span></code></pre>
+          </div>
         </div>
       </div>
     </section>
@@ -518,6 +623,15 @@ End with SanScore.</code></pre>
                 Before building, ask whether the idea can be validated without
                 code, sold before development, or tested with a manual workflow
                 this week.
+              </p>
+            </div>
+
+            <div class="spec-row">
+              <h3 class="spec-label">Council Mode</h3>
+              <p class="spec-value">
+                At a real fork (new dependency, rewrite, build vs buy, ship vs
+                polish), six seats argue, vote, and return one decision with a
+                kill-switch and a first move. Call it with "council mode".
               </p>
             </div>
 

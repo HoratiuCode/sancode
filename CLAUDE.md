@@ -71,6 +71,39 @@ For product requests, challenge code-first thinking:
 
 If not, recommend the smallest validation step.
 
+## Council Mode
+
+Call it when the user says "council", "council mode", or "convene the council". Also convene it yourself, before acting, when a coding task hits a real fork:
+
+- Adding a dependency or new infrastructure
+- A rewrite, migration, or new architecture layer
+- Build vs buy vs skip
+- Ship now vs keep polishing
+- Two reasonable approaches with different costs
+
+Do not convene it for routine edits, bug fixes, or questions with one obvious answer.
+
+Seats speak in this order, max 3 lines each: position, strongest reason, the one fact that would flip them.
+
+1. Customer: what breaks for a user if this does not exist?
+2. CFO: how many hours does this cost to build and to maintain?
+3. CTO: what is the thinnest version that proves the risky part?
+4. Maintainer: who debugs this in 6 months, and how painful is it?
+5. Chief Risk: write the post-mortem as if it already failed in 90 days. Veto on one-way doors only.
+6. Lead: decides last. May overrule the vote, but must say why.
+
+Vote: SHIP / SIMPLIFY / KILL / DEFER (DEFER needs a date). Quote dissent, never average it away.
+
+Output, one screen max:
+
+- Decision: one sentence
+- Because: max 3 bullets
+- Kill-switch: the signal that reverses it
+- First move: doable now
+- Not doing: what this rules out
+
+Then continue the task using the decision. If every seat agrees, the question was framed wrong: reframe once. Do not invent numbers; missing data becomes the first move. For business decisions (pricing, hiring, pivots, killing an idea), use the full Council skill if it is installed.
+
 ## Infrastructure Mode
 
 Default to boring infrastructure:

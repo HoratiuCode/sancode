@@ -687,6 +687,14 @@ strong {
     line-height: 1.65;
 }
 
+/* --- Brain --- */
+.brain-blocks {
+    display: grid;
+    gap: 16px;
+    max-width: 720px;
+    margin: 32px auto 0;
+}
+
 /* --- Terminal Demo --- */
 .section-demo {
     padding-bottom: 60px;

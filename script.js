@@ -7,7 +7,7 @@ const PLATFORMS = {
   linux: {
     command: "git clone https://github.com/HoratiuCode/sancode.git",
     prompt: "$",
-    note: "Copy CLAUDE.md, CODEX.md, or CURSOR.md into your project. No package. No runtime. No framework.",
+    note: "Copy CLAUDE.md, CODEX.md, CURSOR.md, OPENCLAW.md, or HERMES.md into your project. No package. No runtime. No framework.",
     stepNote:
       "SanCode is just Markdown. You can read it, fork it, or paste it into any AI coding workflow.",
   },
@@ -312,6 +312,37 @@ const demoSequence = [
       '<span class="t-text">  <span class="t-green">✓</span> Churned accounts</span>',
       '<span class="t-text">No drag-and-drop layouts. No metrics platform.</span>',
       '<span class="t-text">SanScore:</span> <span class="t-accent">93/100</span>',
+    ],
+  },
+  { type: "pause", ms: 3000 },
+
+  { type: "clear" },
+  { type: "prompt", text: "❯ " },
+  {
+    type: "type",
+    text: "Add Redis to cache the customer search",
+    delay: 30,
+  },
+  { type: "pause", ms: 600 },
+  {
+    type: "output",
+    lines: [
+      "",
+      '<span class="t-dim">  Recall: brain.md decided native search 2026-10-27   0.0s</span>',
+      '<span class="t-dim">  Kill-switch p95 &gt; 300ms not hit (p95 = 41ms)        0.0s</span>',
+      '<span class="t-dim">  New infrastructure: convening council                0.1s</span>',
+    ],
+  },
+  { type: "pause", ms: 600 },
+  {
+    type: "output",
+    lines: [
+      "",
+      '<span class="t-text">Council vote: KILL 5 · DEFER 1 · SHIP 0</span>',
+      '<span class="t-text">  <span class="t-green">✓</span> No Redis. Revisit if p95 &gt; 300ms</span>',
+      '<span class="t-text">  <span class="t-green">✓</span> Brain updated: decision kept</span>',
+      "",
+      '<span class="t-accent">[####################]</span> <span class="t-text">100/100 (^_^)  trend 85 &gt; 89 &gt; 91 &gt; 100  up</span>',
     ],
   },
   { type: "pause", ms: 3000 },
