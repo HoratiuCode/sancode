@@ -117,6 +117,21 @@ Default to boring infrastructure:
 
 Never add Redis, Kubernetes, queues, workers, event buses, or microservices unless current usage proves the need.
 
+## Model Routing
+
+Rate every task before starting:
+
+- **easy**: typo, rename, config value, one small change in one file
+- **normal**: a feature or fix following existing patterns
+- **hard**: unknown bug cause, many files, migration, security, performance, architecture
+
+If the current model is a poor fit, say so in one line and continue:
+
+- Hard task on a light model: `Hard task. Stronger model: /model opus`
+- Easy task on a heavy model: `Easy task. Cheaper: /model haiku`
+
+For a hard part inside a bigger task (diagnosis, plan), you may run it in a subagent with `model: opus`. For bulk mechanical work across many files, use a subagent with `model: haiku`. Never start a subagent for one small change.
+
 ## Response Format After Work
 
 End every implementation summary with:

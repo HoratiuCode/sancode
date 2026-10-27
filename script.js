@@ -5,11 +5,11 @@
 // --- Platform install commands ---
 const PLATFORMS = {
   linux: {
-    command: "git clone https://github.com/HoratiuCode/sancode.git",
+    command: "curl -fsSL https://raw.githubusercontent.com/HoratiuCode/sancode/main/install.sh | sh",
     prompt: "$",
-    note: "Copy CLAUDE.md, CODEX.md, CURSOR.md, OPENCLAW.md, or HERMES.md into your project. No package. No runtime. No framework.",
+    note: "Finds Claude Code, Hermes, and OpenClaw and installs the skill into each. Add -s -- --update to update. No package. No runtime.",
     stepNote:
-      "SanCode is just Markdown. You can read it, fork it, or paste it into any AI coding workflow.",
+      "One command installs the skill. Prefer a single rules file? Use step 2.",
   },
 };
 

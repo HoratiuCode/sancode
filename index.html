@@ -166,7 +166,7 @@
             <div class="install-widget-body">
               <span class="install-prompt" id="install-prompt">$</span>
               <code id="install-command"
-                >git clone https://github.com/HoratiuCode/sancode.git</code
+                >curl -fsSL https://raw.githubusercontent.com/HoratiuCode/sancode/main/install.sh | sh</code
               >
               <button
                 class="copy-btn"
@@ -193,8 +193,8 @@
             </div>
           </div>
           <p class="install-note" id="install-note">
-            Copy CLAUDE.md, CODEX.md, CURSOR.md, OPENCLAW.md, or HERMES.md
-            into your project. No package. No runtime. No framework.
+            Finds Claude Code, Hermes, and OpenClaw and installs the skill
+            into each. No package. No runtime.
           </p>
         </div>
       </div>
@@ -210,7 +210,7 @@
           <div class="install-step">
             <div class="step-number">1</div>
             <div class="step-content">
-              <h4>Clone the standard</h4>
+              <h4>Install the skill</h4>
               <div class="code-block">
                 <div class="code-header">
                   <div class="code-tabs">
@@ -226,16 +226,16 @@
                     class="copy-btn"
                     id="step1-copy"
                     onclick="copyText(this)"
-                    data-text="git clone https://github.com/HoratiuCode/sancode.git"
+                    data-text="curl -fsSL https://raw.githubusercontent.com/HoratiuCode/sancode/main/install.sh | sh"
                   >
                     Copy
                   </button>
                 </div>
-                <pre><code id="step1-command">git clone https://github.com/HoratiuCode/sancode.git</code></pre>
+                <pre><code id="step1-command">curl -fsSL https://raw.githubusercontent.com/HoratiuCode/sancode/main/install.sh | sh</code></pre>
               </div>
               <p class="step-note" id="step1-note">
-                SanCode is just Markdown. You can read it, fork it, or paste it
-                into any AI coding workflow.
+                One command installs the skill. Prefer a single rules file? Use
+                step 2.
               </p>
             </div>
           </div>
@@ -243,7 +243,7 @@
           <div class="install-step">
             <div class="step-number">2</div>
             <div class="step-content">
-              <h4>Choose your agent file</h4>
+              <h4>Or use one rules file <span class="step-optional">(no memory)</span></h4>
               <div class="code-block">
                 <div class="code-header">
                   <span>files</span>
@@ -394,13 +394,27 @@ format a date &rarr; lib/format.ts:formatDate
           </div>
 
           <div class="code-block">
+            <div class="code-header"><span>sancode status</span></div>
+            <pre><code>+-- SanCode v2.2 &middot; my-saas &middot; Solo founder ------
+|  Score    [##################..] 91  (^_^)
+|  Trend    -==#=##=## last 10  up
+|  Due      native search kill-switch in 4 days
+|  Learned  1. [outcome] use plain fetch
+|           2. [user] keeps Postgres
++------------------------------------------------
+<span class="code-comment">Say: "forget 2" &middot; "confirm 1" &middot; "sancode setup"</span></code></pre>
+          </div>
+
+          <div class="code-block">
             <div class="code-header">
               <span>install the skill</span>
-              <button class="copy-btn" onclick="copyText(this)" data-text="cp -r skill/sancode ~/.claude/skills/sancode">Copy</button>
+              <button class="copy-btn" onclick="copyText(this)" data-text="curl -fsSL https://raw.githubusercontent.com/HoratiuCode/sancode/main/install.sh | sh">Copy</button>
             </div>
-            <pre><code>cp -r skill/sancode ~/.claude/skills/sancode              <span class="code-comment"># Claude Code</span>
-cp -r skill/sancode ~/.hermes/skills/sancode              <span class="code-comment"># Hermes</span>
-cp -r skill/sancode ~/.openclaw/workspace/skills/sancode  <span class="code-comment"># OpenClaw</span></code></pre>
+            <pre><code>curl -fsSL https://raw.githubusercontent.com/HoratiuCode/sancode/main/install.sh | sh
+<span class="code-comment">SanCode installer
+[x] claude       v2.2.0   ~/.claude/skills/sancode
+[x] hermes       v2.2.0   ~/.hermes/skills/sancode
+[ ] openclaw     not found</span></code></pre>
           </div>
         </div>
       </div>
@@ -632,6 +646,16 @@ cp -r skill/sancode ~/.openclaw/workspace/skills/sancode  <span class="code-comm
                 At a real fork (new dependency, rewrite, build vs buy, ship vs
                 polish), six seats argue, vote, and return one decision with a
                 kill-switch and a first move. Call it with "council mode".
+              </p>
+            </div>
+
+            <div class="spec-row">
+              <h3 class="spec-label">Model Routing</h3>
+              <p class="spec-value">
+                Every task is rated easy, normal, or hard. SanCode suggests
+                /model haiku for a typo and /model opus for a migration, or in
+                Claude Code hands the hard part to an Opus subagent. Codex gets
+                one-line profile suggestions.
               </p>
             </div>
 

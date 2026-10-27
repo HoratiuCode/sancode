@@ -122,6 +122,21 @@ Prefer:
 - Server actions or simple endpoints over complex APIs
 - Manual operations over internal tools until repeated pain exists
 
+## Model Routing
+
+Rate every task before starting:
+
+- **easy**: typo, rename, config value, one small change in one file
+- **normal**: a feature or fix following existing patterns
+- **hard**: unknown bug cause, many files, migration, security, performance, architecture
+
+If the current model or reasoning effort is a poor fit, say so in one line, then continue:
+
+- Hard task: `Hard task. Use /model with high reasoning, or restart with codex --profile sancode-hard`
+- Easy task: `Easy task. Cheaper: codex --profile sancode-easy`
+
+Never suggest for normal tasks. Suggest each direction at most once per session.
+
 ## Completion Report
 
 After each task, include:

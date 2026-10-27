@@ -14,17 +14,27 @@ It is not a framework, a library, or another layer in your stack. It is a set of
 
 ## Quick Start
 
-**Option 1: the skill (recommended).** Claude Code, Hermes, and OpenClaw. Includes the brain, setup, all modes, and the visual SanScore.
+**Option 1: the skill (recommended).** One command. It finds Claude Code, Hermes, and OpenClaw on your machine and installs into each.
 
 ```bash
-git clone https://github.com/HoratiuCode/sancode.git && cd sancode
-
-cp -r skill/sancode ~/.claude/skills/sancode              # Claude Code: /sancode
-cp -r skill/sancode ~/.hermes/skills/sancode              # Hermes: "apply sancode"
-cp -r skill/sancode ~/.openclaw/workspace/skills/sancode  # OpenClaw: just ask
+curl -fsSL https://raw.githubusercontent.com/HoratiuCode/sancode/main/install.sh | sh
 ```
 
-Then ask for any coding task. The first time, SanCode runs a short setup.
+```text
+SanCode installer
+[x] claude       v2.2.0   ~/.claude/skills/sancode
+[x] hermes       v2.2.0   ~/.hermes/skills/sancode
+[ ] openclaw     not found
+Done. Open any project and ask for code: SanCode runs setup on first use.
+```
+
+| Action | Command |
+|---|---|
+| Update | `curl -fsSL https://raw.githubusercontent.com/HoratiuCode/sancode/main/install.sh \| sh -s -- --update` |
+| Uninstall | `curl -fsSL https://raw.githubusercontent.com/HoratiuCode/sancode/main/install.sh \| sh -s -- --uninstall` |
+| One agent only | `... \| sh -s -- --only claude` |
+
+Updates never touch your project brains. They upgrade themselves on the next task and tell you what's new. Prefer manual? Copy `skill/sancode` into `~/.claude/skills/`, `~/.hermes/skills/`, or `~/.openclaw/workspace/skills/`.
 
 **Option 2: one rules file.** Any agent, no memory. Copy the file for your agent into your project:
 
@@ -59,7 +69,15 @@ Every task runs the same loop:
 
 ### Setup
 
-The first time SanCode runs in a project, it reads your package files, configs, and README, shows what it found, then asks once:
+The first time SanCode runs in a project, it reads your package files, configs, and README, shows what it found, and offers a preset:
+
+| Preset | Strict | Work | Council | Brain | Visual | Models |
+|---|---|---|---|---|---|---|
+| **Solo founder** (default) | strict | plan briefly then code | at real forks | private | card | suggest |
+| **Team repo** | balanced | explain options and wait | at real forks | shared | bar | suggest |
+| **Prototype** | relaxed | just code | off | private | bar | auto |
+
+A preset answers most questions. You only fill in what it can't know:
 
 1. What are you building, and what stage? (idea / pre-revenue / paying users)
 2. How strict should I be? (strict / balanced / relaxed)
@@ -69,6 +87,7 @@ The first time SanCode runs in a project, it reads your package files, configs, 
 6. When should the council convene? (at real forks / only when asked / off)
 7. Brain shared (commit it) or private (`.gitignore`)?
 8. Show the score as a picture? (off / bar / card)
+9. Pick the model by task difficulty? (suggest / auto / off)
 
 Every question has a default. Say "defaults" to skip. **Your rules always beat SanCode's.** Rerun anytime with `sancode setup`.
 
@@ -86,9 +105,29 @@ Next session, SanCode checks git for what you did to the code it wrote:
 
 From then on it follows that lesson like a direct instruction. If you overrule it once in chat, it stops arguing.
 
+### Home screen
+
+Say `sancode status` to open the brain:
+
+```text
++-- SanCode v2.2 · my-saas · Solo founder ---------------
+|  Score    [##################..] 91  (^_^)
+|  Trend    -==#=##=## last 10  up
+|  Due      native search kill-switch in 4 days
+|  Pending  2 outcomes to check
+|  Learned  1. [outcome] use plain fetch (3d ago)
+|           2. [user] keeps Postgres (12d ago)
+|  Models   suggest · easy haiku · hard opus
+|  Rules    4 yours · 12 reuse · 3 open decisions
++--------------------------------------------------------
+Say: "forget 2" · "confirm 1" · "sancode setup" · "sancode visual card"
+```
+
+Everything SanCode learned about you is visible, and you can delete or confirm any lesson.
+
 ### The brain file
 
-One Markdown file, `.sancode/brain.md`, about 120 lines at most. It cleans itself up: merges duplicates, drops old decisions, never touches your rules.
+One Markdown file, `.sancode/brain.md`, about 120 lines at most. Its first line holds the SanCode version, so it upgrades itself after an update. It cleans itself up: merges duplicates, drops old decisions, never touches your rules.
 
 ```markdown
 ## Profile      what you're building, stage, stack, existing deps
@@ -142,6 +181,36 @@ Six seats speak in order, three lines each:
 
 They vote SHIP / SIMPLIFY / KILL / DEFER. The result is one decision, a kill-switch that reverses it, and a first move. The decision is saved to the brain. For business calls (pricing, hiring, pivots), use the full Council skill.
 
+### Model Routing
+
+SanCode rates every task **easy**, **normal**, or **hard**, and matches the model to it: cheap and fast for a typo, the strongest model for a migration or a bug with an unknown cause.
+
+| Rating | Examples | Claude Code | Codex |
+|---|---|---|---|
+| easy | typo, rename, config value, one small edit | `haiku` | profile `sancode-easy` |
+| normal | feature or fix in existing patterns | `sonnet` | your default |
+| hard | unknown bug, many files, migration, security, architecture, council | `opus` | profile `sancode-hard` |
+
+| Setting | What happens |
+|---|---|
+| **suggest** (default) | One line when the model doesn't fit, e.g. `Hard task. Stronger model: /model opus`. Never nags: once per direction per session. |
+| **auto** | Claude Code hands the hard part (diagnosis, plan, council) to an `opus` subagent, and bulk mechanical work to a `haiku` subagent. Codex can't switch its own model, so it falls back to suggest. |
+| **off** | No ratings, no suggestions. |
+
+Change it with `sancode models auto`, or the tiers with `sancode models hard=opus easy=haiku`. If you ignore the same suggestion three times, SanCode stops making it.
+
+Codex profiles for the suggestions, in `~/.codex/config.toml`:
+
+```toml
+[profiles.sancode-easy]
+model_reasoning_effort = "low"
+# model = "<your fast model>"
+
+[profiles.sancode-hard]
+model_reasoning_effort = "high"
+# model = "<your strongest model>"
+```
+
 ### Infrastructure Mode
 
 Built into every mode. SQLite before Postgres. One server before microservices. Cron before queues. Files before object storage. In-memory before Redis. No Redis, Kubernetes, queues, or workers until current usage proves the need.
@@ -190,11 +259,15 @@ Faces: `(^_^)` 90+, `(-_-)` 70–89, `(o_o)` 50–69, `(x_x)` below 50. Council 
 
 | Say | Does |
 |---|---|
-| `sancode setup` | Rerun setup, change rules and settings |
+| `sancode status` | Home screen: score, trend, due decisions, what it learned |
+| `forget N` / `confirm N` | Delete or confirm a lesson from the home screen |
+| `sancode setup` | Rerun setup, change preset, rules, and settings |
 | `startup mode` / `sancode startup` | Should this be built at all? |
 | `council mode` / `sancode council` | Convene the council on the current fork |
 | `sancode code` | Force Coding Mode |
 | `sancode visual bar` / `card` / `off` | Change the score visual |
+| `sancode models suggest` / `auto` / `off` | Model routing by task difficulty |
+| `sancode models hard=opus easy=haiku` | Change the model tiers |
 
 ## Principles
 

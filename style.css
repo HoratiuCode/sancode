@@ -496,9 +496,9 @@ strong {
 
 .install-widget-body code {
     flex: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
     text-align: left;
     transition: opacity 0.15s var(--ease-out-quad);
 }
