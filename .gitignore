@@ -1,3 +1,6 @@
 .DS_Store
 .vercel
 sancode.zip
+
+# daily scan artifacts
+.scan/
